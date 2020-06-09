@@ -1,0 +1,13 @@
+@page "/"
+
+<div class="control-section">
+   <Cards @ref="CardsRef"></Cards>
+   <PieChart @ref="PieChartRef"></PieChart>
+   <DataGrid @ref="GridRef"></DataGrid>
+</div>
+
+@code {
+    public Cards CardsRef;
+    public PieChart PieChartRef;
+    public DataGrid GridRef;
+}

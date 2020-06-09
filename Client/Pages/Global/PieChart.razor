@@ -1,0 +1,106 @@
+@using Syncfusion.Blazor.Charts
+@inject AttributeService AttributeService
+
+<style>
+    .e-grid {
+        border: none;
+    }
+
+        .e-grid tr.e-row {
+            height: 30px;
+        }
+</style>
+
+<div class="row rounded-lg mt-3 shadow-lg" style="background: white;">
+    <div class="col">
+        <SfAccumulationChart Title="Countries with the Highest Cases" Width="100%" Height="380px" EnableSmartLabels="true">
+            <AccumulationChartSeriesCollection>
+                <AccumulationChartSeries DataSource="@Countries" XName="Recovered" YName="Confirmed" Radius="83%" StartAngle="0" EndAngle="360" InnerRadius="25%" Palettes="@palettes">
+                    <AccumulationDataLabelSettings Visible="true" Name="Country_Region" Position="AccumulationLabelPosition.Outside">
+                        <AccumulationChartConnector Length="10%"></AccumulationChartConnector>
+                        <AccumulationChartDataLabelFont Color="Black" Size="14px" FontFamily="Roboto"></AccumulationChartDataLabelFont>
+                    </AccumulationDataLabelSettings>
+                    <AccumulationChartAnimation Enable="false"></AccumulationChartAnimation>
+                </AccumulationChartSeries>
+            </AccumulationChartSeriesCollection>
+            <AccumulationChartTooltipSettings Enable="true" Format="${point.x} : ${point.y}"></AccumulationChartTooltipSettings>
+            <AccumulationChartLegendSettings Visible="false"></AccumulationChartLegendSettings>
+        </SfAccumulationChart>
+    </div>
+    <div class="col mt-3">
+        <SfGrid TValue="PieData"
+                DataSource="@DataSource"
+                Width="70%"
+                AllowSelection="false"
+                GridLines="GridLine.None"
+                EnableHover="false">
+
+            <GridTemplates>
+                <RowTemplate>
+                    @{ 
+                        var legend = (context as PieData);
+                        var style = "width: 16px; height: 16px; margin-left: 1px; " +
+                    "               border-radius: 16px; background:" + legend.Color;
+
+                        <td><div style="@style"></div></td>
+                        <td>@legend.Text</td>
+                        <td style="text-align: right;">@legend.Y</td>
+                        <td style="text-align: right;">@legend.X</td> 
+                     }
+                </RowTemplate>
+            </GridTemplates>
+            <GridColumns>
+                <GridColumn Field="@nameof(PieData.Color)" HeaderText="" Width="10" TextAlign="@TextAlign.Center"></GridColumn>
+                <GridColumn Field="@nameof(PieData.Text)" HeaderText="Country" Width="40" TextAlign="@TextAlign.Left"></GridColumn>
+                <GridColumn Field="@nameof(PieData.Y)" HeaderText="Positive" Format="N0" Width="35" TextAlign="@TextAlign.Right"></GridColumn>
+                <GridColumn Field="@nameof(PieData.X)" HeaderText="Recovered" Format="N0" Width="35" TextAlign="@TextAlign.Right"></GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </div>
+</div>
+
+@code { 
+    
+    private IEnumerable<Attributes> Countries;
+    private List<Attributes> AllAttribute { get; set; }
+    private List<PieData> DataSource = new List<PieData>();
+
+            private string[] palettes = new string[] {
+                    "#61EFCD", "#CDDE1F", "#FEC200", "#CA765A", "#2485FA",
+                    "#F57D7D", "#C152D2", "#8854D9", "#3D4EB8", "#00BCD7" };
+
+            public class PieData
+            {
+                public string X { get; set; }
+                public string Y { get; set; }
+                public string Text { get; set; }
+                public string Color { get; set; }
+            }
+
+            protected override async Task OnInitializedAsync()
+            {
+                AllAttribute = await AttributeService.GetAttributesAsync();
+                UpdateValues();
+                GetDataSource();
+            }
+
+            private void UpdateValues()
+            {
+                var positiveData = AllAttribute.Where(a => a.Confirmed != 0).ToList();
+                Countries = positiveData.OrderByDescending(x => x.Confirmed).Take(10);
+            }
+
+            private void GetDataSource()
+            {
+                for (int i = 0; i < Countries.Count(); i++)
+                {
+                    DataSource.Add(new PieData
+                    {
+                        X = Countries.ElementAt(i).Recovered.ToString("N0"),
+                        Y = Countries.ElementAt(i).Confirmed.ToString("N0"),
+                        Text = Countries.ElementAt(i).Country_Region.ToString(),
+                        Color = this.palettes[i]
+                    });
+                }
+            } 
+    }

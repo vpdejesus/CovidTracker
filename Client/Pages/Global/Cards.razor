@@ -1,0 +1,93 @@
+@inject AttributeService AttributeService
+
+    <div class="row rounded-lg shadow-lg" style="background: white;">
+        <div class="col mt-3 ml-1">
+            <div class="e-card card bg-warning mb-3 text-center" style="height: 11rem; width: 11rem;">
+                <div class="e-card-content">
+                    <img class="card-img-bottom" src="images/positive.png" alt="positive"
+                         style="height: 5rem; width: 5rem;" />
+                    <h3 class="card-value text-white" id="confirmed">@TotalPositive</h3>
+                    <span class="card-text text-white">POSITIVE</span>
+                </div>
+            </div>
+        </div>
+        <div class="col mt-3 ml-1">
+            <div class="e-card card bg-success mb-3 text-center" style="height: 11rem; width: 11rem;">
+                <div class="e-card-content">
+                    <img class="card-img-bottom" src="images/recovered.png" alt="recovered"
+                         style="height: 5rem; width: 5rem;" />
+                    <h3 class="card-value text-white" id="recovered">@TotalRecovered</h3>
+                    <span class="card-text text-white">RECOVERED</span>
+                </div>
+            </div>
+        </div>
+        <div class="col mt-3 ml-1">
+            <div class="e-card card bg-dark mb-3 text-center" style="height: 11rem; width: 11rem;">
+                <div class="e-card-content">
+                    <img class="card-img-bottom" src="images/active.png" alt="active"
+                         style="height: 5rem; width: 5rem;" />
+                    <h3 class="card-value text-white" id="active">@TotalActive</h3>
+                    <span class="card-text text-white">ACTIVE</span>
+                </div>
+            </div>
+        </div>
+        <div class="col mt-3 ml-1">
+            <div class="e-card card bg-danger mb-3 text-center" style="height: 11rem; width: 11rem;">
+                <div class="e-card-content">
+                    <img class="card-img-bottom" src="images/death.png" alt="death"
+                         style="height: 5rem; width: 5rem;" />
+                    <h3 class="card-value text-white" id="deaths">@TotalDeaths</h3>
+                    <span class="card-text text-white">DEATHS</span>
+                </div>
+            </div>
+        </div>
+        <div class="col mt-3 ml-1">
+            <div class="e-card card bg-info mb-3 text-center" style="height: 11rem; width: 11rem;">
+                <div class="e-card-content">
+                    <img class="card-img-bottom" src="images/globe.png" alt="globe"
+                         style="height: 5rem; width: 5rem;" />
+                    <h3 class="card-value text-white" id="deaths">@TotalCountries</h3>
+                    <span class="card-text text-white">COUNTRIES</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @code { 
+        public string TotalPositive = "";
+        public string TotalRecovered = "";
+        public string TotalActive = "";
+        public string TotalDeaths = "";
+        public string TotalCountries = "";
+        private List<Attributes> AllAttribute { get; set; }
+
+                protected override async Task OnInitializedAsync()
+                {
+                    AllAttribute = await AttributeService.GetAttributesAsync();
+                    UpdateCardValues();
+                }
+
+                private void UpdateCardValues()
+                {
+                    var positiveData = AllAttribute.Where(a => a.Confirmed != 0).ToList();
+                    var positive = positiveData.Sum(n => n.Confirmed);
+                    TotalPositive = positive.ToString("N0");
+
+                    var recoveredData = AllAttribute.Where(a => a.Recovered != 0).ToList();
+                    var recovered = recoveredData.Sum(n => n.Recovered);
+                    TotalRecovered = recovered.ToString("N0");
+
+                    var activeData = AllAttribute.Where(a => a.Active != 0).ToList();
+                    var active = activeData.Sum(n => n.Active);
+                    TotalActive = active.ToString("N0");
+
+                    var deathData = AllAttribute.Where(a => a.Deaths != 0).ToList();
+                    var deaths = deathData.Sum(n => n.Deaths);
+                    TotalDeaths = deaths.ToString("N0");
+
+                    var countryData = AllAttribute.Where(a => a.Country_Region != "").ToList();
+                    var countries = countryData.Count();
+                    TotalCountries = countries.ToString("N0");
+
+                    StateHasChanged();
+                } }

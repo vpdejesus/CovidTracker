@@ -1,0 +1,68 @@
+@inject AttributeService AttributeService
+
+<div class="row rounded-lg mt-3 mb-3 shadow-lg" style="background: white;">
+    <div class="col mt-3 ml-2 mr-2">
+        <SfGrid ID="StatGrid"
+                DataSource="@AllAttribute"
+                Toolbar="@(new List<string>() { "Search" })"
+                Width="100%"
+                Height="100%"
+                AllowSorting="true"
+                EnableHover="false"
+                AllowPaging="true">
+
+            <GridSortSettings>
+                <GridSortColumns>
+                    <GridSortColumn Field="Confirmed"
+                                    Direction="SortDirection.Descending">
+                    </GridSortColumn>
+                </GridSortColumns>
+            </GridSortSettings>
+
+            <GridColumns>
+                <GridColumn Field=@nameof(Attributes.Country_Region)
+                            HeaderText="Country"
+                            TextAlign="TextAlign.Left"
+                            Width="150">
+                </GridColumn>
+                <GridColumn Field=@nameof(Attributes.Confirmed)
+                            HeaderText="Positive"
+                            Format="N0"
+                            Type="ColumnType.Number"
+                            TextAlign="TextAlign.Right"
+                            Width="120">
+                </GridColumn>
+                <GridColumn Field=@nameof(Attributes.Recovered)
+                            HeaderText="Recovered"
+                            Format="N0"
+                            Type="ColumnType.Number"
+                            TextAlign="TextAlign.Right"
+                            Width="120">
+                </GridColumn>
+                <GridColumn Field=@nameof(Attributes.Active)
+                            HeaderText="Active"
+                            Format="N0"
+                            Type="ColumnType.Number"
+                            TextAlign="TextAlign.Right"
+                            Width="120">
+                </GridColumn>
+                <GridColumn Field=@nameof(Attributes.Deaths)
+                            HeaderText="Deaths"
+                            Format="N0"
+                            Type="ColumnType.Number"
+                            TextAlign="TextAlign.Right"
+                            Width="120">
+                </GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </div>
+</div>
+
+@code {
+    private List<Attributes> AllAttribute { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        AllAttribute = await AttributeService.GetAttributesAsync();
+    }
+}
