@@ -1,7 +1,7 @@
 @inherits LayoutComponentBase
 
 <div class="sidebar">
-    <NavMenu />
+    <NavMenu @ref="NavMenuRef"/>
 </div>
 
 <div class="main bg-light">
@@ -9,3 +9,8 @@
         @Body
     </div>
 </div>
+
+@code {
+
+    private NavMenu NavMenuRef;
+} 

@@ -5,7 +5,6 @@
     .e-grid {
         border: none;
     }
-
         .e-grid tr.e-row {
             height: 30px;
         }
@@ -15,14 +14,15 @@
     <div class="col">
         <SfAccumulationChart Title="Countries with the Highest Cases" Width="100%" Height="380px" EnableSmartLabels="true">
             <AccumulationChartSeriesCollection>
-                <AccumulationChartSeries DataSource="@Countries" XName="Recovered" YName="Confirmed" Radius="83%" StartAngle="0" EndAngle="360" InnerRadius="25%" Palettes="@palettes">
-                    <AccumulationDataLabelSettings Visible="true" Name="Country_Region" Position="AccumulationLabelPosition.Outside">
+                <AccumulationChartSeries DataSource="@DataSource" XName="Text" YName="Y" Radius="83%" StartAngle="0" EndAngle="360" InnerRadius="25%" Palettes="@palettes">
+                    <AccumulationDataLabelSettings Visible="true" Name="Text" Position="AccumulationLabelPosition.Outside">
                         <AccumulationChartConnector Length="10%"></AccumulationChartConnector>
                         <AccumulationChartDataLabelFont Color="Black" Size="14px" FontFamily="Roboto"></AccumulationChartDataLabelFont>
                     </AccumulationDataLabelSettings>
                     <AccumulationChartAnimation Enable="false"></AccumulationChartAnimation>
                 </AccumulationChartSeries>
             </AccumulationChartSeriesCollection>
+            <AccumulationChartEvents TooltipRender="TooltipRender" />
             <AccumulationChartTooltipSettings Enable="true" Format="${point.x} : ${point.y}"></AccumulationChartTooltipSettings>
             <AccumulationChartLegendSettings Visible="false"></AccumulationChartLegendSettings>
         </SfAccumulationChart>
@@ -44,8 +44,8 @@
 
                         <td><div style="@style"></div></td>
                         <td>@legend.Text</td>
-                        <td style="text-align: right;">@legend.Y</td>
-                        <td style="text-align: right;">@legend.X</td> 
+                        <td style="text-align: right;">@legend.Y.ToString("N0")</td>
+                        <td style="text-align: right;">@legend.X.ToString("N0")</td> 
                      }
                 </RowTemplate>
             </GridTemplates>
@@ -60,47 +60,57 @@
 </div>
 
 @code { 
-    
+
     private IEnumerable<Attributes> Countries;
     private List<Attributes> AllAttribute { get; set; }
     private List<PieData> DataSource = new List<PieData>();
 
-            private string[] palettes = new string[] {
+    private string[] palettes = new string[] {
                     "#61EFCD", "#CDDE1F", "#FEC200", "#CA765A", "#2485FA",
                     "#F57D7D", "#C152D2", "#8854D9", "#3D4EB8", "#00BCD7" };
 
-            public class PieData
-            {
-                public string X { get; set; }
-                public string Y { get; set; }
-                public string Text { get; set; }
-                public string Color { get; set; }
-            }
-
-            protected override async Task OnInitializedAsync()
-            {
-                AllAttribute = await AttributeService.GetAttributesAsync();
-                UpdateValues();
-                GetDataSource();
-            }
-
-            private void UpdateValues()
-            {
-                var positiveData = AllAttribute.Where(a => a.Confirmed != 0).ToList();
-                Countries = positiveData.OrderByDescending(x => x.Confirmed).Take(10);
-            }
-
-            private void GetDataSource()
-            {
-                for (int i = 0; i < Countries.Count(); i++)
-                {
-                    DataSource.Add(new PieData
-                    {
-                        X = Countries.ElementAt(i).Recovered.ToString("N0"),
-                        Y = Countries.ElementAt(i).Confirmed.ToString("N0"),
-                        Text = Countries.ElementAt(i).Country_Region.ToString(),
-                        Color = this.palettes[i]
-                    });
-                }
-            } 
+    public class PieData
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public string Text { get; set; }
+        public string Color { get; set; }
     }
+
+    protected override async Task OnInitializedAsync()
+    {
+        AllAttribute = await AttributeService.GetAttributesAsync();
+        UpdateValues();
+        GetDataSource();
+    }
+
+    private void UpdateValues()
+    {
+        var positiveData = AllAttribute.Where(a => a.Confirmed != 0).ToList();
+        Countries = positiveData.OrderByDescending(x => x.Confirmed).Take(10);
+    }
+
+    private void GetDataSource()
+    {
+        for (int i = 0; i < Countries.Count(); i++)
+        {
+            DataSource.Add(new PieData
+            {
+                X = Countries.ElementAt(i).Recovered,
+                Y = Countries.ElementAt(i).Confirmed,
+                Text = Countries.ElementAt(i).Country_Region,
+                Color = this.palettes[i]
+            });
+        }
+    }
+
+    void TooltipRender(ITooltipRenderEventArgs Args)
+    {
+        var text = Args.Text.Split(':');
+        var pointX = text[0];
+        var y = Int32.Parse(text[1]);
+        var pointY = y.ToString("N0");
+        Args.Text = pointX + " : " + pointY;
+    }
+
+}

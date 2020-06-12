@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Syncfusion.Blazor;
 using Server.Services;
+using Syncfusion.Blazor;
 
 namespace Server
 {
