@@ -22,3 +22,5 @@ steps:
     appType: 'webApp'
     WebAppName: 'covtracker'
     packageForLinux: '$(build.artifactStagingDirectory)\WebApp.zip'
+
+- task: PublishBuildArtifacts@1
