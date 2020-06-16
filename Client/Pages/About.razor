@@ -1,5 +1,43 @@
-﻿<h3>About</h3>
+﻿@page "/about"
 
-@code {
+<div class="row rounded-lg shadow-lg mr-2" style="background: white;">
+    <div class="col mt-3 ml-1">
+        <div class="e-card card bg-dark mb-3 text-left" style="height: 20rem; width: 64rem;">
+            <div class="e-card-content">
+                <span class="card-text text-white">ABOUT</span>
 
-}
+                <p class="card-text text-white mt-3"
+                   style="font-family:georgia,garamond,serif;font-size:14px;">
+
+                    A tracker that provides updated status for Covid-19 cases worldwide. Information is available for
+                    Confirmed, Recovered, Active and Deaths due to Covid-19. This app consumes the Web API service from
+                    ArcGIS.
+                </p>
+
+                <span class="card-text text-white">Disclaimer</span>
+                <p class="card-text text-white mt-3"
+                   style="font-family:georgia,garamond,serif;font-size:12px;font-style:italic;">
+
+                    The information contained in this website is for general information purposes only. The information is
+                    provided by datasets from available API services and the creator does not own, maintain, or modify the
+                    datasets. While website creator keeps the information, the creator makes no representations or warranties
+                    of any kind, express or implied, about the completeness, accuracy, reliability, suitability or availability
+                    with respect to the website or the information, or related graphics contained on the website for any
+                    purpose. Any reliance you place on such information is therefore strictly at your own risk.
+                </p>
+
+                <p class="card-text text-white mt-3"
+                   style="font-family:georgia,garamond,serif;font-size:14px;">
+
+                    Sources: <a href="https://coronavirus-resources.esri.com/">ESRI / ArcGIS</a>
+                </p>
+
+                <p class="card-text text-white mt-3"
+                   style="font-family:georgia,garamond,serif;font-size:14px;">
+
+                    Developed 2020 <a href="http://microsoftdeveloper.gear.host/">Vincent Paul de Jesus</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
