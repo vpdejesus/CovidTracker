@@ -35,8 +35,9 @@ namespace Client.Services
                         NullValueHandling = NullValueHandling.Ignore,
                         MissingMemberHandling = MissingMemberHandling.Ignore
                     };
+
                     var content = await response.Content.ReadAsStringAsync();
-                    var rootObject = JsonConvert.DeserializeObject<RootObject>(content);
+                    var rootObject = JsonConvert.DeserializeObject<RootObject>(content, settings);
                     attributes = rootObject.Features.Select(f => f.Attributes).ToList();
                 }
             }

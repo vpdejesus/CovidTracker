@@ -54,16 +54,17 @@
 </div>
 
 @code { 
-    
+
     public string TotalPositive = "";
     public string TotalRecovered = "";
     public string TotalActive = "";
     public string TotalDeaths = "";
     public string TotalCountries = "";
     private List<Attributes> AllAttribute { get; set; }
-
+    
     protected override async Task OnInitializedAsync()
     {
+       
         AllAttribute = await AttributeService.GetAttributesAsync();
         UpdateCardValues();
     }
@@ -91,5 +92,5 @@
         TotalCountries = countries.ToString("N0");
 
         StateHasChanged();
-    } 
+    }
 }

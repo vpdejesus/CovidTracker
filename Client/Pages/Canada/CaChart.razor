@@ -5,7 +5,6 @@
     .e-grid {
         border: none;
     }
-
         .e-grid tr.e-row {
             height: 30px;
         }
@@ -26,16 +25,6 @@
             <AccumulationChartTooltipSettings Enable="true" Format="${point.x} : ${point.y}"></AccumulationChartTooltipSettings>
             <AccumulationChartLegendSettings Visible="false"></AccumulationChartLegendSettings>
         </SfAccumulationChart>
-
-        @*<SfChart Title="Status" Width="60%">
-                <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category"></ChartPrimaryXAxis>
-                <ChartTooltipSettings Enable="true"></ChartTooltipSettings>
-
-                <ChartSeriesCollection>
-                    <ChartSeries DataSource="@ChartSource" XName="XValue" YName="YValue" Type="ChartSeriesType.Column">
-                    </ChartSeries>
-                </ChartSeriesCollection>
-            </SfChart>*@
     </div>
     <div class="col mt-5">
         <SfGrid TValue="Status"
