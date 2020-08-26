@@ -55,16 +55,15 @@
 
 @code { 
 
-    public string TotalPositive = "";
-    public string TotalRecovered = "";
-    public string TotalActive = "";
-    public string TotalDeaths = "";
-    public string TotalCountries = "";
+    private string TotalPositive = "";
+    private string TotalRecovered = "";
+    private string TotalActive = "";
+    private string TotalDeaths = "";
+    private string TotalCountries = "";
     private List<Attributes> AllAttribute { get; set; }
     
     protected override async Task OnInitializedAsync()
-    {
-       
+    {      
         AllAttribute = await AttributeService.GetAttributesAsync();
         UpdateCardValues();
     }
@@ -90,7 +89,5 @@
         var countryData = AllAttribute.Where(a => a.Country_Region != "").ToList();
         var countries = countryData.Count();
         TotalCountries = countries.ToString("N0");
-
-        StateHasChanged();
     }
 }

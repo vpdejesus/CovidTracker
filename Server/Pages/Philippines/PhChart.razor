@@ -54,9 +54,8 @@
     </div>
 </div>
 
-@code { private IEnumerable<Attributes> Countries;
-    private List<Attributes> AllAttribute { get; set; }
-    private List<Status> Statuses = new List<Status>();
+@code { 
+    private List<Status> Statuses { get; set; }
     private string[] palettes = new string[] { "#61EFCD", "#CDDE1F", "#FEC200", "#CA765A" };
 
     private class Status
@@ -68,44 +67,15 @@
 
     protected override async Task OnInitializedAsync()
     {
-        AllAttribute = await AttributeService.GetAttributesAsync();
-        UpdateValues();
-        GetStatuses();
+        var attributes = await AttributeService.GetAttributesAsync();
+        var data = attributes.Where(a => a.Country_Region == "Philippines").ToList();
+
+        Statuses = new List<Status>
+        {
+            new Status { X = "Positive", Y = data.ElementAt(0).Confirmed, Color = this.palettes[0] },
+            new Status { X = "Recovered", Y = data.ElementAt(0).Recovered, Color = this.palettes[1] },
+            new Status { X = "Active", Y = data.ElementAt(0).Active, Color = this.palettes[2] },
+            new Status { X = "Deaths", Y = data.ElementAt(0).Deaths, Color = this.palettes[3] }
+        };
     }
-
-    private void UpdateValues()
-    {
-        Countries = AllAttribute.Where(a => a.Country_Region == "Philippines").ToList();
-    }
-
-    private void GetStatuses()
-    {
-        Statuses.Add(new Status
-        {
-            X = "Positive",
-            Y = Countries.ElementAt(0).Confirmed,
-            Color = this.palettes[0]
-        });
-
-        Statuses.Add(new Status
-        {
-            X = "Recovered",
-            Y = Countries.ElementAt(0).Recovered,
-            Color = this.palettes[1]
-        });
-
-        Statuses.Add(new Status
-        {
-            X = "Active",
-            Y = Countries.ElementAt(0).Active,
-            Color = this.palettes[2]
-        });
-
-        Statuses.Add(new Status
-        {
-            X = "Deaths",
-            Y = Countries.ElementAt(0).Deaths,
-            Color = this.palettes[3]
-        });
-    } 
 }
