@@ -2,10 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>3dbc8393-e622-4f54-8079-a48096cb54fe</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Syncfusion.Blazor" Version="18.1.0.59" />
+    <PackageReference Include="Syncfusion.Blazor" Version="18.2.0.55" />
   </ItemGroup>
 
 </Project>

@@ -5,6 +5,7 @@
     .e-grid {
         border: none;
     }
+
         .e-grid tr.e-row {
             height: 30px;
         }
@@ -54,7 +55,8 @@
     </div>
 </div>
 
-@code { 
+@code {
+
     private List<Status> Statuses { get; set; }
     private string[] palettes = new string[] { "#61EFCD", "#CDDE1F", "#FEC200", "#CA765A" };
 
@@ -71,7 +73,7 @@
         var data = attributes.Where(a => a.Country_Region == "Philippines").ToList();
 
         Statuses = new List<Status>
-        {
+{
             new Status { X = "Positive", Y = data.ElementAt(0).Confirmed, Color = this.palettes[0] },
             new Status { X = "Recovered", Y = data.ElementAt(0).Recovered, Color = this.palettes[1] },
             new Status { X = "Active", Y = data.ElementAt(0).Active, Color = this.palettes[2] },

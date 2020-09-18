@@ -36,16 +36,14 @@
 
             <GridTemplates>
                 <RowTemplate>
-                    @{ 
-                        var legend = (context as PieData);
+                    @{  var legend = (context as PieData);
                         var style = "width: 16px; height: 16px; margin-left: 1px; " +
                                     "border-radius: 16px; background:" + legend.Color;
 
                         <td><div style="@style"></div></td>
                         <td>@legend.Text</td>
                         <td style="text-align: right;">@legend.Y.ToString("N0")</td>
-                        <td style="text-align: right;">@legend.X.ToString("N0")</td> 
-                     }
+                        <td style="text-align: right;">@legend.X.ToString("N0")</td> }
                 </RowTemplate>
             </GridTemplates>
             <GridColumns>
@@ -64,7 +62,7 @@
                     "#61EFCD", "#CDDE1F", "#FEC200", "#CA765A", "#2485FA",
                     "#F57D7D", "#C152D2", "#8854D9", "#3D4EB8", "#00BCD7" };
 
-    private class PieData
+    public class PieData
     {
         public int X { get; set; }
         public int Y { get; set; }
@@ -74,11 +72,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        DataSource = new List<PieData>();
         var attributes = await AttributeService.GetAttributesAsync();
         var positive = attributes.Where(a => a.Confirmed != 0).ToList();
         var data = positive.OrderByDescending(x => x.Confirmed).Take(10);
 
+        DataSource = new List<PieData>();
         for (int i = 0; i < data.Count(); i++)
         {
             DataSource.Add(new PieData

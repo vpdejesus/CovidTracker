@@ -5,6 +5,7 @@
     .e-grid {
         border: none;
     }
+
         .e-grid tr.e-row {
             height: 30px;
         }
@@ -12,53 +13,53 @@
 
 <div class="row rounded-lg shadow-lg" style="background: white;">
     <div class="col">
-            <SfAccumulationChart Title="Status Chart" Width="100%" Height="380px" EnableSmartLabels="true">
-                <AccumulationChartSeriesCollection>
-                    <AccumulationChartSeries DataSource="@Statuses" XName="X" YName="Y" Radius="83%" StartAngle="0" EndAngle="360" InnerRadius="25%" Palettes="@palettes">
-                        <AccumulationDataLabelSettings Visible="true" Name="X" Position="AccumulationLabelPosition.Outside">
-                            <AccumulationChartConnector Length="10%"></AccumulationChartConnector>
-                            <AccumulationChartDataLabelFont Color="Black" Size="14px" FontFamily="Roboto"></AccumulationChartDataLabelFont>
-                        </AccumulationDataLabelSettings>
-                        <AccumulationChartAnimation Enable="false"></AccumulationChartAnimation>
-                    </AccumulationChartSeries>
-                </AccumulationChartSeriesCollection>
-                <AccumulationChartTooltipSettings Enable="true" Format="${point.x} : ${point.y}"></AccumulationChartTooltipSettings>
-                <AccumulationChartLegendSettings Visible="false"></AccumulationChartLegendSettings>
-            </SfAccumulationChart>
-        </div>
-        <div class="col mt-5">
-            <SfGrid TValue="Status"
-                    DataSource="@Statuses"
-                    Width="50%"
-                    AllowSelection="false"
-                    GridLines="GridLine.None"
-                    EnableHover="false">
+        <SfAccumulationChart Title="Status Chart" Width="100%" Height="380px" EnableSmartLabels="true">
+            <AccumulationChartSeriesCollection>
+                <AccumulationChartSeries DataSource="@Statuses" XName="X" YName="Y" Radius="83%" StartAngle="0" EndAngle="360" InnerRadius="25%" Palettes="@palettes">
+                    <AccumulationDataLabelSettings Visible="true" Name="X" Position="AccumulationLabelPosition.Outside">
+                        <AccumulationChartConnector Length="10%"></AccumulationChartConnector>
+                        <AccumulationChartDataLabelFont Color="Black" Size="14px" FontFamily="Roboto"></AccumulationChartDataLabelFont>
+                    </AccumulationDataLabelSettings>
+                    <AccumulationChartAnimation Enable="false"></AccumulationChartAnimation>
+                </AccumulationChartSeries>
+            </AccumulationChartSeriesCollection>
+            <AccumulationChartTooltipSettings Enable="true" Format="${point.x} : ${point.y}"></AccumulationChartTooltipSettings>
+            <AccumulationChartLegendSettings Visible="false"></AccumulationChartLegendSettings>
+        </SfAccumulationChart>
+    </div>
+    <div class="col mt-5">
+        <SfGrid TValue="Status"
+                DataSource="@Statuses"
+                Width="50%"
+                AllowSelection="false"
+                GridLines="GridLine.None"
+                EnableHover="false">
 
-                <GridTemplates>
-                    <RowTemplate>
-                        @{ var legend = (context as Status);
-                           var style = "width: 16px; height: 16px; margin-left: 1px; " +
-                                       "border-radius: 16px; background:" + legend.Color;
+            <GridTemplates>
+                <RowTemplate>
+                    @{ var legend = (context as Status);
+                        var style = "width: 16px; height: 16px; margin-left: 1px; " +
+                                    "border-radius: 16px; background:" + legend.Color;
 
-                           <td><div style="@style"></div></td>
-                           <td style="text-align: left;">@legend.X</td>
-                           <td style="text-align: right;">@legend.Y.ToString("N0")</td> }
-                    </RowTemplate>
-                </GridTemplates>
-                <GridColumns>
-                    <GridColumn Field="@nameof(Status.Color)" HeaderText="" Width="10" TextAlign="@TextAlign.Center"></GridColumn>
-                    <GridColumn Field="@nameof(Status.X)" HeaderText="Status" Width="10" TextAlign="@TextAlign.Left"></GridColumn>
-                    <GridColumn Field="@nameof(Status.Y)" HeaderText="Figure" Width="10" TextAlign="@TextAlign.Right"></GridColumn>
-                </GridColumns>
-            </SfGrid>
-        </div>
+                        <td><div style="@style"></div></td>
+                        <td style="text-align: left;">@legend.X</td>
+                        <td style="text-align: right;">@legend.Y.ToString("N0")</td> }
+                </RowTemplate>
+            </GridTemplates>
+            <GridColumns>
+                <GridColumn Field="@nameof(Status.Color)" HeaderText="" Width="10" TextAlign="@TextAlign.Center"></GridColumn>
+                <GridColumn Field="@nameof(Status.X)" HeaderText="Status" Width="10" TextAlign="@TextAlign.Left"></GridColumn>
+                <GridColumn Field="@nameof(Status.Y)" HeaderText="Figure" Width="10" TextAlign="@TextAlign.Right"></GridColumn>
+            </GridColumns>
+        </SfGrid>
+    </div>
 </div>
 
 @code {
     private List<Status> Statuses { get; set; }
     private string[] palettes = new string[] { "#61EFCD", "#CDDE1F", "#FEC200", "#CA765A" };
 
-    private class Status
+    public class Status
     {
         public string X { get; set; }
         public int Y { get; set; }
@@ -71,7 +72,7 @@
         var data = attributes.Where(a => a.Country_Region == "Canada").ToList();
 
         Statuses = new List<Status>
-        {
+    {
             new Status { X = "Positive", Y = data.ElementAt(0).Confirmed, Color = this.palettes[0] },
             new Status { X = "Recovered", Y = data.ElementAt(0).Recovered, Color = this.palettes[1] },
             new Status { X = "Active", Y = data.ElementAt(0).Active, Color = this.palettes[2] },
